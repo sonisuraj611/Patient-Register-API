@@ -1,0 +1,55 @@
+{
+	"info": {
+		"_postman_id": "3dbce2ce-a548-48c2-ba82-29c935442ff0",
+		"name": "Hospital-Patients",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19934564"
+	},
+	"item": [
+		{
+			"name": "Register Patient",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Name\":\"name\",\"Address\":\"addresshogyabadakhub\",\"Email\":\"emial@mail.com\",\"Phone\":\"+919992403913\",\"Password\":\"Password1\",\"Photo\":\"photo\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/patients/register",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"patients",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Hospital Details",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}/patients/2",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"patients",
+						"2"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
