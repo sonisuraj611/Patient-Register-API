@@ -17,5 +17,5 @@ I shared the json file of postman collection which can be used by importing
 
 
 Some important things:-
-1) The express-async-error is not working in some cases when trying to fetch the hospital details(Some type problems with package in node modules).
+1) The express-async-error is not working in some cases when trying to fetch the hospital details(Some type problems with package in node modules). Try-catch block or manually typed async wrapper can be used.
 2) I used VARCHAR type in photo attribute in mysql which can be changed to Medium Blob to store photo
