@@ -12,13 +12,19 @@
 				"method": "POST",
 				"header": [],
 				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"Name\":\"name\",\"Address\":\"addresshogyabadakhub\",\"Email\":\"emial@mail.com\",\"Phone\":\"+919992403913\",\"Password\":\"Password1\",\"Photo\":\"photo\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "data",
+							"value": "{\n    \"Name\":\"name\",\"Address\":\"addresshogyabadakhub\",\"Email\":\"emiaasdsl@mail.com\",\"Phone\":\"+919992403913\",\"Password\":\"Password1\"\n}",
+							"type": "text"
+						},
+						{
+							"key": "pic",
+							"type": "file",
+							"src": "/C:/Users/sonis/OneDrive/Pictures/1630126995127.jpg"
 						}
-					}
+					]
 				},
 				"url": {
 					"raw": "{{URL}}/patients/register",

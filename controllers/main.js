@@ -10,56 +10,39 @@ db.connect((error) => {
 });
 
 const register = async (req, res) => {
-    const { Name, Address, Email, Phone, Password, Photo } = req.body;
-    if (!Name || !Address || !Email || !Password || !Photo) {
-        throw new BadRequestError('Every field except phone number is required');
-    }
-    if (Address.length < 10) {
-        throw new BadRequestError('Address should be of atleast 10 characters');
-    }
 
-    let emailFormat = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-    if (!Email.match(emailFormat)) {
-        throw new BadRequestError('Please provide correct email');
-    }
+    let parsedData = JSON.parse(req.body.data);
+    const { Name, Address, Email, Phone } = parsedData;
+    const Photo = req.file;
+    const ImageName = Photo.path.slice(7);
+    const Password = req.hashedPassword;
 
-    // let phoneFormat = /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/;
-    let phoneFormat = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{5,6}$/im;
-    if (!Phone.match(phoneFormat) || !Phone.startsWith('+')) {
-        throw new BadRequestError('Please provide correct phone number');
-    }
-
-    // let passwordFormat =  /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/
-    let passwordFormat = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,15}$/
-    if (!Password.match(passwordFormat)) {
-        throw new BadRequestError('Please provide correct password with (Max length 15 and min length 8), atlest one upperCase, one lowerCase and one number');
-
+    const responseObj = {
+        Name, Address, Email, Phone, Password, ImageName
     }
 
     let r = (Math.random() * 21) + 1; // random number of psychiatrists (1-21)
     let random = Math.floor(r);
 
-    let sql = `INSERT INTO patients (sno, Name, PsychiatristID, Email, Phone, Password, Photo, Address) VALUES (NULL, '${Name}', '${random}', '${Email}', '${Phone}', '${Password}', '${Photo}', '${Address}')`
+    let sql = `INSERT INTO patients (sno, Name, PsychiatristID, Email, Phone, Password, Photo, Address) VALUES (NULL, '${Name}', '${random}', '${Email}', '${Phone}', '${Password}', '${ImageName}', '${Address}')`
 
     db.query(sql, (err, result) => {
         if (err) {
-            throw new BadRequestError('Sql query error')
+            throw new Error('Sql query error')
         }
         let sql2 = `Select * from psychiatrists where Id= '${random}'`;
         db.query(sql2, (err2, result2) => {
             if (err2) {
-                throw new BadRequestError('Sql query error of random psychiatrist');
+                throw new Error('Sql query error of random psychiatrist');
             }
             let patientCount = result2[0].PatientCount;
             let Id = result2[0].Id;
-            console.log(Id);
-            console.log(patientCount);
             let sql3 = `UPDATE psychiatrists SET PatientCount = '${patientCount + 1}' WHERE psychiatrists.Id = ${Id}`
             db.query(sql3, (err3, result3) => {
                 if (err3) {
-                    throw new BadRequestError('Sql query error of update')
+                    throw new Error('Sql query error of update')
                 }
-                return res.status(StatusCodes.OK).json({ msg: 'Successfully Registered', body: req.body })
+                return res.status(StatusCodes.OK).json({ msg: 'Successfully Registered', body: responseObj })
 
             })
         })
@@ -76,17 +59,16 @@ const getHospital = async (req, res) => {
     let sql = `Select * from hospitals where sno= '${hospitalId}'`;
     db.query(sql, (err, result) => {
         if (err) {
-            throw new BadRequestError('Sql query error')
+            throw new Error('Sql query error')
         }
         if (!result.length >= 1) {
-            console.log('No nothing');
-            throw new NotFoundError(`No Hospital with id ${hospitalId}`)
+            return res.status(404).json({ errMsg: `No hospital with id ${hospitalId}` })
         }
         let HospitalName = result[0].Name
         let sql2 = `Select * from psychiatrists where HospitalName = '${HospitalName}'`
         db.query(sql2, (err2, result2) => {
             if (err2) {
-                throw new BadRequestError('Sql query gadbad')
+                throw new Error('Sql query error')
             }
             Psychiatrist_Details = [];
             patientsCount = 0;

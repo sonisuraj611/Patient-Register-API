@@ -9,6 +9,7 @@ const errorHandlerMiddleware = require('./middlewares/error-handler')
 const notFoundMiddleware = require('./middlewares/not-found')
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }))
 
 app.get('/', (req, res) => {
     res.send('<h1>HI</h1>')

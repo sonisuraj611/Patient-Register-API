@@ -1,12 +1,26 @@
+
+UPDATES:-
+
+1) Completed the assignment of photo upload (using multer). Stored the image in "Images" folder and stored the filename on Database.
+2) Used bcryptjs for hashing the password and saving hashed password on db for security
+
+
 Dependencies and their use:- 
 
 "dependencies": {
+    "bcryptjs": "^2.4.3",
     "express": "^4.18.2",
     "express-async-errors": "^3.1.1",
     "http-status-codes": "^2.2.0",
+    "multer": "^1.4.5-lts.1",
     "mysql": "^2.18.1"
-}
+  }
 
+**
+Updated
+multer -> To parse the multipart/form-data (To upload the image)
+bcryptjs -> To hash the password
+**
 
 express-async-errors -> To paas the thrown error from async functions to middleware without having to use try-catch block and 'next()'
 
@@ -15,7 +29,3 @@ http-status-codes -> To make code more readable
 ** Postman **
 I shared the json file of postman collection which can be used by importing 
 
-
-Some important things:-
-1) The express-async-error is not working in some cases when trying to fetch the hospital details(Some type problems with package in node modules). Try-catch block or manually typed async wrapper can be used.
-2) I used VARCHAR type in photo attribute in mysql which can be changed to Medium Blob to store photo
